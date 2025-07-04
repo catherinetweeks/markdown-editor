@@ -1,13 +1,14 @@
 // import { useState } from 'react'
-import './App.css'
-import RichTextEditor from './components/RichTextEditor'
-import Heading from './components/Heading'
+import RichTextEditor from './components/RichTextEditor';
+import Heading from './components/Heading';
+import DarkModeButton from './components/DarkModeButton';
 
 function App() {
   return (
-    <div>
+    <div className="bg-zinc-100 dark:bg-zinc-800 h-screen w-full">
       <Heading />
       <RichTextEditor />
+      <DarkModeButton />
     </div>
   )
 }

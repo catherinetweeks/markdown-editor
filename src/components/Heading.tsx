@@ -2,7 +2,7 @@ function Heading() {
 
     return (
         <div>
-            <p className="text-2xl cursor-default">Text to Markdown</p>
+            <h1 className="flex justify-center text-3xl cursor-default">Text to Markdown</h1>
         </div>
     )
 }
