@@ -22,7 +22,7 @@ function DarkModeButton () {
 
     return (
         <button
-            className="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-xl fixed bottom-6 right-6 cursor-pointer hover:-translate-y-0.5 transition-transform"
+            className="bg-zinc-100 dark:bg-zinc-900 p-2 rounded-xl fixed bottom-6 right-6 cursor-pointer hover:-translate-y-0.5 transition-transform"
             onClick={toggleTheme}>
             {theme === 'light' ?  (
                 <LuMoon className="w-7 h-7 text-black"/>
