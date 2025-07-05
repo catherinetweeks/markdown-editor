@@ -5,9 +5,11 @@ import DarkModeButton from './components/DarkModeButton';
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Heading />
-      <RichTextEditor />
+      <div className="flex-1">
+        <RichTextEditor />
+      </div>
       <DarkModeButton />
     </div>
   )
