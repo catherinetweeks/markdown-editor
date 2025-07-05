@@ -5,7 +5,7 @@ import DarkModeButton from './components/DarkModeButton';
 
 function App() {
   return (
-    <div className="bg-zinc-100 dark:bg-zinc-800 h-screen w-full">
+    <div>
       <Heading />
       <RichTextEditor />
       <DarkModeButton />
