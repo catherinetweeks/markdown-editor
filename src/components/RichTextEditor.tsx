@@ -10,7 +10,6 @@ import '../editor.css';
 import Underline from '@tiptap/extension-underline';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
-import Link from '@tiptap/extension-link';
 
 function RichTextEditor() {
   const [markdown, setMarkdown] = useState<string>('');
@@ -71,7 +70,7 @@ function RichTextEditor() {
         <div className="bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg">
         <EditorContent
             editor={editor}
-            className="prose dark:prose-invert [&_[contenteditable]]:min-h-[12rem]"
+            className="text-black dark:text-white prose dark:prose-invert [&_[contenteditable]]:min-h-[12rem]"
         />
         </div>
 
