@@ -138,6 +138,72 @@ function RichTextEditor() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // download markdown as an md file
+  const downloadMarkdown = () => {
+    if (!editor) return;
+    const html = editor.getHTML();
+    const turndownService = new TurndownService({
+      headingStyle: 'atx',
+      bulletListMarker: '-',
+      codeBlockStyle: 'fenced',
+    });
+
+    // Add the same custom rules as the copy function
+    turndownService.addRule('underline', {
+      filter: ['u'],
+      replacement: function (content) {
+        return '<u>' + content + '</u>';
+      }
+    });
+
+    turndownService.addRule('strikethrough', {
+      filter: ['s', 'del'],
+      replacement: function (content) {
+        return '~~' + content + '~~';
+      }
+    });
+
+    turndownService.addRule('superscript', {
+      filter: ['sup'],
+      replacement: function (content) {
+        return '^' + content + '^';
+      }
+    });
+
+    turndownService.addRule('subscript', {
+      filter: ['sub'],
+      replacement: function (content) {
+        return '~' + content + '~';
+      }
+    });
+
+    turndownService.addRule('heading', {
+      filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      replacement: function (content, node) {
+        const level = parseInt(node.nodeName.charAt(1));
+        const hashes = '#'.repeat(level);
+        return '\n' + hashes + ' ' + content + '\n';
+      }
+    });
+
+    const md = turndownService.turndown(html);
+    
+    // Create a blob with the markdown content
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary download link
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `new-markdown-document.md`;
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="text-lg max-w-2xl mx-auto p-4 h-full space-y-4">
         <Toolbar editor={editor} />
@@ -156,6 +222,7 @@ function RichTextEditor() {
         {copied ? <LuCheck className="text-zinc-400" /> : <LuCopy />}
       </button>
       <button
+        onClick={downloadMarkdown}
         className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
       >
         <LuDownload className="text-zinc-400" />
