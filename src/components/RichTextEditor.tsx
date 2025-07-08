@@ -2,7 +2,8 @@ import { useEditor, EditorContent } from '@tiptap/React';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import TurndownService from 'turndown';
-import { LuCopy } from "react-icons/lu";
+import { LuCopy, LuCheck } from "react-icons/lu";
+import { useState } from 'react';
 import '../editor.css';
 
 // toolbar buttons
@@ -15,6 +16,8 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import ListItem from '@tiptap/extension-list-item';
 
 function RichTextEditor() {
+  const [copied, setCopied] = useState(false);
+
   const Toolbar = ({ editor }: { editor: any }) => {
     if (!editor) return null;
 
@@ -38,7 +41,7 @@ function RichTextEditor() {
   const editor = useEditor({
     extensions: [
         StarterKit.configure({
-        codeBlock: false, // disable default to use custom CodeBlock
+        codeBlock: false,
         heading: false,   // disable default heading to use custom
         bulletList: false, // disable default bullet list to use custom
         orderedList: false, // disable default ordered list to use custom
@@ -77,9 +80,62 @@ function RichTextEditor() {
   const copyMarkdown = () => {
     if (!editor) return;
     const html = editor.getHTML();
-    const turndownService = new TurndownService();
+    const turndownService = new TurndownService({
+      headingStyle: 'atx', // Use # for headings instead of underlines
+      bulletListMarker: '-', // Use - for bullet lists
+      codeBlockStyle: 'fenced', // Use ``` for code blocks
+    });
+
+    // Add custom rules for extensions that TurndownService doesn't handle by default
+    
+    // Handle underline (convert to HTML since markdown doesn't have native underline)
+    turndownService.addRule('underline', {
+      filter: ['u'],
+      replacement: function (content) {
+        return '<u>' + content + '</u>';
+      }
+    });
+
+    // Handle strikethrough
+    turndownService.addRule('strikethrough', {
+      filter: ['s', 'del'],
+      replacement: function (content) {
+        return '~~' + content + '~~';
+      }
+    });
+
+    // Handle superscript
+    turndownService.addRule('superscript', {
+      filter: ['sup'],
+      replacement: function (content) {
+        return '^' + content + '^';
+      }
+    });
+
+    // Handle subscript
+    turndownService.addRule('subscript', {
+      filter: ['sub'],
+      replacement: function (content) {
+        return '~' + content + '~';
+      }
+    });
+
+    // Handle headings more explicitly
+    turndownService.addRule('heading', {
+      filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      replacement: function (content, node) {
+        const level = parseInt(node.nodeName.charAt(1));
+        const hashes = '#'.repeat(level);
+        return '\n' + hashes + ' ' + content + '\n';
+      }
+    });
+
     const md = turndownService.turndown(html);
     navigator.clipboard.writeText(md);
+    
+    // Show copied feedback
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -96,27 +152,10 @@ function RichTextEditor() {
         onClick={copyMarkdown}
         className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
       >
-        <LuCopy />
+        {copied ? <LuCheck className="text-zinc-400" /> : <LuCopy />}
       </button>
     </div>
   );
 }
 
 export default RichTextEditor
-
-
-//   const editor = useEditor({
-//     extensions: [
-//       StarterKit,
-//       Placeholder.configure({
-//         placeholder: 'Enter text here...',
-//         emptyEditorClass: 'is-editor-empty',
-//       }),
-//     ],
-//     content: '',
-//     editorProps: {
-//       attributes: {
-//         class: 'outline-none ring-0 focus:outline-none focus:ring-0 focus:ring-transparent',
-//       },
-//     },
-//   });
