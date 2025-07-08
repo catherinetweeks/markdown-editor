@@ -22,20 +22,20 @@ function RichTextEditor() {
     if (!editor) return null;
 
     return (
-        <div className="flex flex-wrap gap-2 mb-2">
-        <button onMouseDown={() => editor.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
-        <button onMouseDown={() => editor.chain().focus().toggleItalic().run()} className="btn italic">I</button>
-        <button onMouseDown={() => editor.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
-        <button onMouseDown={() => editor.chain().focus().toggleStrike().run()} className="btn line-through">S</button>
-        <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className="btn">H1</button>
-        <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="btn">H2</button>
-        <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className="btn">H3</button>
-        <button onMouseDown={() => editor.chain().focus().toggleBulletList().run()} className="btn">• List</button>
-        <button onMouseDown={() => editor.chain().focus().toggleOrderedList().run()} className="btn">1. List</button>
-        <button onMouseDown={() => editor.chain().focus().toggleSuperscript().run()} className="btn">X<sup>2</sup></button>
-        <button onMouseDown={() => editor.chain().focus().toggleSubscript().run()} className="btn">X<sub>2</sub></button>
+        <div className="max-w-md flex flex-wrap justify-start mb-2 w-full gap-2">
+            <button onMouseDown={() => editor.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
+            <button onMouseDown={() => editor.chain().focus().toggleItalic().run()} className="btn italic">I</button>
+            <button onMouseDown={() => editor.chain().focus().toggleUnderline().run()} className="btn underline">U</button>
+            <button onMouseDown={() => editor.chain().focus().toggleStrike().run()} className="btn line-through">S</button>
+            <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className="btn">H1</button>
+            <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className="btn">H2</button>
+            <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className="btn">H3</button>
+            <button onMouseDown={() => editor.chain().focus().toggleBulletList().run()} className="btn">• List</button>
+            <button onMouseDown={() => editor.chain().focus().toggleOrderedList().run()} className="btn">1. List</button>
+            <button onMouseDown={() => editor.chain().focus().toggleSuperscript().run()} className="btn">X<sup>2</sup></button>
+            <button onMouseDown={() => editor.chain().focus().toggleSubscript().run()} className="btn">X<sub>2</sub></button>
         </div>
-    );
+      );
     };
 
   const editor = useEditor({
@@ -141,6 +141,7 @@ function RichTextEditor() {
   return (
     <div className="text-lg max-w-2xl mx-auto p-4 h-full space-y-4">
         <Toolbar editor={editor} />
+        <hr className="max-w-2xl flex flex-wrap justify-start mb-2 w-full text-zinc-200 dark:text-zinc-700"/>
         <div className="bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg">
         <EditorContent
             editor={editor}

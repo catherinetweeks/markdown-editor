@@ -17,5 +17,6 @@ html, body {
 }
 
 .btn {
-  @apply px-2 py-1 bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white text-sm rounded hover:bg-zinc-300 dark:hover:bg-zinc-700
+  @apply px-2 py-1 text-black dark:text-white text-sm rounded hover:bg-zinc-300 dark:hover:bg-zinc-700
 }
+ /* bg-zinc-200 dark:bg-zinc-800 */
