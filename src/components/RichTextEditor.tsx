@@ -2,7 +2,7 @@ import { useEditor, EditorContent } from '@tiptap/React';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import TurndownService from 'turndown';
-import { LuCopy, LuCheck } from "react-icons/lu";
+import { LuCopy, LuCheck, LuDownload } from "react-icons/lu";
 import { useState } from 'react';
 import '../editor.css';
 
@@ -32,8 +32,8 @@ function RichTextEditor() {
         <button onMouseDown={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className="btn">H3</button>
         <button onMouseDown={() => editor.chain().focus().toggleBulletList().run()} className="btn">• List</button>
         <button onMouseDown={() => editor.chain().focus().toggleOrderedList().run()} className="btn">1. List</button>
-        <button onMouseDown={() => editor.chain().focus().toggleSuperscript().run()} className="btn">Sup</button>
-        <button onMouseDown={() => editor.chain().focus().toggleSubscript().run()} className="btn">Sub</button>
+        <button onMouseDown={() => editor.chain().focus().toggleSuperscript().run()} className="btn">X<sup>2</sup></button>
+        <button onMouseDown={() => editor.chain().focus().toggleSubscript().run()} className="btn">X<sub>2</sub></button>
         </div>
     );
     };
@@ -86,9 +86,9 @@ function RichTextEditor() {
       codeBlockStyle: 'fenced', // Use ``` for code blocks
     });
 
-    // Add custom rules for extensions that TurndownService doesn't handle by default
+    // add custom rules for extensions that TurndownService doesn't handle by default
     
-    // Handle underline (convert to HTML since markdown doesn't have native underline)
+    // handle underline (convert to HTML since markdown doesn't have native underline)
     turndownService.addRule('underline', {
       filter: ['u'],
       replacement: function (content) {
@@ -96,7 +96,7 @@ function RichTextEditor() {
       }
     });
 
-    // Handle strikethrough
+    // handle strikethrough
     turndownService.addRule('strikethrough', {
       filter: ['s', 'del'],
       replacement: function (content) {
@@ -104,7 +104,7 @@ function RichTextEditor() {
       }
     });
 
-    // Handle superscript
+    // handle superscript
     turndownService.addRule('superscript', {
       filter: ['sup'],
       replacement: function (content) {
@@ -112,7 +112,7 @@ function RichTextEditor() {
       }
     });
 
-    // Handle subscript
+    // handle subscript
     turndownService.addRule('subscript', {
       filter: ['sub'],
       replacement: function (content) {
@@ -120,7 +120,7 @@ function RichTextEditor() {
       }
     });
 
-    // Handle headings more explicitly
+    // handle headings more explicitly
     turndownService.addRule('heading', {
       filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
       replacement: function (content, node) {
@@ -133,7 +133,7 @@ function RichTextEditor() {
     const md = turndownService.turndown(html);
     navigator.clipboard.writeText(md);
     
-    // Show copied feedback
+    // show copied feedback
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -153,6 +153,11 @@ function RichTextEditor() {
         className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
       >
         {copied ? <LuCheck className="text-zinc-400" /> : <LuCopy />}
+      </button>
+      <button
+        className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
+      >
+        <LuDownload className="text-zinc-400" />
       </button>
     </div>
   );
