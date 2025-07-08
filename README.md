@@ -1,7 +1,7 @@
 # Rich Text to Markdown Editor
 ### Project Description
 
-This minimalist web app is a rich text editor built with React and several open-source libraries. It allows users to compose formatted text and export it as Markdown, either by copying the Markdown output or downloading it as a .md file. The interface is designed to be clean and user-friendly, with all essential features easily accessible. In addition to standard Markdown formatting, the editor supports GitHub Flavored Markdown extensions such as underline and strikethrough.
+This minimalist web app is a rich text editor built with React and several open-source libraries. It allows users to compose formatted text and export it as Markdown, either by copying the Markdown output or downloading it as a .md file. The interface is designed to be clean and user-friendly, with all essential features easily accessible. In addition to standard Markdown formatting, the editor supports GitHub Flavored Markdown extensions such as strikethrough and has some features like underline that are not in markdown, but make the text editor itself more complete.
 
 ### Why I build this
 
