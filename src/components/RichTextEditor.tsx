@@ -38,6 +38,11 @@ function RichTextEditor() {
       );
     };
 
+  const LOCAL_STORAGE_KEY = 'tiptap-content';
+  const savedContent = typeof window !== 'undefined'
+  ? localStorage.getItem(LOCAL_STORAGE_KEY)
+  : '';
+
   const editor = useEditor({
     extensions: [
         StarterKit.configure({
@@ -69,12 +74,16 @@ function RichTextEditor() {
         }),
         ListItem,
     ],
-    content: '',
+    content: savedContent || '',
     editorProps: {
         attributes: {
         class: 'outline-none ring-0 focus:outline-none focus:ring-0 focus:ring-transparent',
         },
     },
+    onUpdate({ editor }) {
+      const html = editor.getHTML();
+      localStorage.setItem(LOCAL_STORAGE_KEY, html);
+  },
     });
 
   const copyMarkdown = () => {
