@@ -21,6 +21,7 @@ function RichTextEditor() {
   const Toolbar = ({ editor }: { editor: any }) => {
     if (!editor) return null;
 
+    // buttons for editor toolbar
     return (
         <div className="max-w-md flex flex-wrap justify-start mb-2 w-full gap-2">
             <button onMouseDown={() => editor.chain().focus().toggleBold().run()} className="btn font-bold">B</button>
@@ -38,19 +39,22 @@ function RichTextEditor() {
       );
     };
 
+  // store text locally on browser-- persists when tab is closed or refreshed
   const LOCAL_STORAGE_KEY = 'tiptap-content';
   const savedContent = typeof window !== 'undefined'
   ? localStorage.getItem(LOCAL_STORAGE_KEY)
   : '';
-
+  
+  //editor settings/rules
   const editor = useEditor({
     extensions: [
         StarterKit.configure({
+          // disabling features so custom ones can be used-- the default ones weren't working
         codeBlock: false,
-        heading: false,   // disable default heading to use custom
-        bulletList: false, // disable default bullet list to use custom
-        orderedList: false, // disable default ordered list to use custom
-        listItem: false,   // disable default list item to use custom
+        heading: false,   // disable default heading
+        bulletList: false, // disable default bullet list
+        orderedList: false, // disable default ordered list
+        listItem: false,   // disable default list item
         }),
         Placeholder.configure({
         placeholder: 'Enter text here...',
@@ -74,28 +78,31 @@ function RichTextEditor() {
         }),
         ListItem,
     ],
+    // load saved content or empty string if saved content is empty
     content: savedContent || '',
     editorProps: {
+        // get rid of focus ring
         attributes: {
         class: 'outline-none ring-0 focus:outline-none focus:ring-0 focus:ring-transparent',
         },
     },
+    //update saved storage
     onUpdate({ editor }) {
       const html = editor.getHTML();
       localStorage.setItem(LOCAL_STORAGE_KEY, html);
   },
     });
 
+  
+  // convert then copy the rich text into markdown using turndown service
   const copyMarkdown = () => {
     if (!editor) return;
     const html = editor.getHTML();
     const turndownService = new TurndownService({
-      headingStyle: 'atx', // Use # for headings instead of underlines
-      bulletListMarker: '-', // Use - for bullet lists
-      codeBlockStyle: 'fenced', // Use ``` for code blocks
+      headingStyle: 'atx', // use # for headings (as opposed to underlines)
+      bulletListMarker: '-', // - for bulleted lists
+      codeBlockStyle: 'fenced', // ``` for code blocks
     });
-
-    // add custom rules for extensions that TurndownService doesn't handle by default
     
     // handle underline (convert to HTML since markdown doesn't have native underline)
     turndownService.addRule('underline', {
@@ -157,7 +164,7 @@ function RichTextEditor() {
       codeBlockStyle: 'fenced',
     });
 
-    // Add the same custom rules as the copy function
+    // add the same custom rules as the copy function
     turndownService.addRule('underline', {
       filter: ['u'],
       replacement: function (content) {
@@ -197,39 +204,47 @@ function RichTextEditor() {
 
     const md = turndownService.turndown(html);
     
-    // Create a blob with the markdown content
+    // create blob with the markdown content
     const blob = new Blob([md], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     
-    // Create a temporary download link
+    // temp download link
     const link = document.createElement('a');
     link.href = url;
     link.download = `new-markdown-document.md`;
     document.body.appendChild(link);
     link.click();
     
-    // Clean up
+    // cleanup from download link
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="text-lg max-w-4xl mx-auto p-4 h-full space-y-4">
+        {/* toolbar */}
         <Toolbar editor={editor} />
+
+        {/* horizontal line to separate textbox from toolbar */}
         <hr className="max-w-4xl flex flex-wrap justify-start mb-2 w-full text-zinc-200 dark:text-zinc-700"/>
-        <div className="bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg">
+
+        {/* editor that grows to fix the size of the text */}
+        <div className="p-4 rounded-lg">
         <EditorContent
             editor={editor}
             className="text-black dark:text-white prose dark:prose-invert [&_[contenteditable]]:min-h-[12rem]"
         />
         </div>
 
+      {/* copy markdown to clipboard button  */}
       <button
         onClick={copyMarkdown}
         className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
       >
         {copied ? <LuCheck className="text-zinc-400" /> : <LuCopy />}
       </button>
+
+      {/* download md file to downloads */}
       <button
         onClick={downloadMarkdown}
         className="px-4 py-2 text-zinc-400 rounded-lg transition cursor-pointer hover:-translate-y-0.5"
