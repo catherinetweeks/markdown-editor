@@ -214,9 +214,9 @@ function RichTextEditor() {
   };
 
   return (
-    <div className="text-lg max-w-2xl mx-auto p-4 h-full space-y-4">
+    <div className="text-lg max-w-4xl mx-auto p-4 h-full space-y-4">
         <Toolbar editor={editor} />
-        <hr className="max-w-2xl flex flex-wrap justify-start mb-2 w-full text-zinc-200 dark:text-zinc-700"/>
+        <hr className="max-w-4xl flex flex-wrap justify-start mb-2 w-full text-zinc-200 dark:text-zinc-700"/>
         <div className="bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg">
         <EditorContent
             editor={editor}
