@@ -22,6 +22,10 @@ When I'm typing up a README file, I usually use an online "rich text to markdown
 -   Download converted text as a .md file
 -   Text is stored locally in browser (so it persists when you close the tab or reload)
 
+<img width="1234" alt="Screenshot 2025-07-08 at 15 00 25" src="https://github.com/user-attachments/assets/e53086f3-11e2-40cf-a55f-5d6db8fa385d" />
+<img width="1232" alt="Screenshot 2025-07-08 at 15 00 35" src="https://github.com/user-attachments/assets/65dd9e1c-c885-48f8-bfb5-b2ac43ed17df" />
+
+
 ### Tools Used
 
 -   React with Typescript
