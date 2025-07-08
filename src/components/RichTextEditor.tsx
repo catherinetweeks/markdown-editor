@@ -1,4 +1,4 @@
-import { useEditor, EditorContent } from '@tiptap/React';
+import { useEditor, EditorContent, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import TurndownService from 'turndown';
@@ -18,7 +18,7 @@ import ListItem from '@tiptap/extension-list-item';
 function RichTextEditor() {
   const [copied, setCopied] = useState(false);
 
-  const Toolbar = ({ editor }: { editor: any }) => {
+  const Toolbar = ({ editor }: { editor: Editor | null }) => {
     if (!editor) return null;
 
     // buttons for editor toolbar
