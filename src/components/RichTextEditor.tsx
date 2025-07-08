@@ -3,17 +3,18 @@ import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import TurndownService from 'turndown';
 import { LuCopy } from "react-icons/lu";
-import { useState } from 'react';
 import '../editor.css';
 
 // toolbar buttons
 import Underline from '@tiptap/extension-underline';
 import Superscript from '@tiptap/extension-superscript';
 import Subscript from '@tiptap/extension-subscript';
+import Heading from '@tiptap/extension-heading';
+import BulletList from '@tiptap/extension-bullet-list';
+import OrderedList from '@tiptap/extension-ordered-list';
+import ListItem from '@tiptap/extension-list-item';
 
 function RichTextEditor() {
-  const [markdown, setMarkdown] = useState<string>('');
-
   const Toolbar = ({ editor }: { editor: any }) => {
     if (!editor) return null;
 
@@ -38,6 +39,10 @@ function RichTextEditor() {
     extensions: [
         StarterKit.configure({
         codeBlock: false, // disable default to use custom CodeBlock
+        heading: false,   // disable default heading to use custom
+        bulletList: false, // disable default bullet list to use custom
+        orderedList: false, // disable default ordered list to use custom
+        listItem: false,   // disable default list item to use custom
         }),
         Placeholder.configure({
         placeholder: 'Enter text here...',
@@ -46,6 +51,20 @@ function RichTextEditor() {
         Underline,
         Superscript,
         Subscript,
+        Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6],
+        }),
+        BulletList.configure({
+        HTMLAttributes: {
+            class: 'my-bullet-list',
+        },
+        }),
+        OrderedList.configure({
+        HTMLAttributes: {
+            class: 'my-ordered-list',
+        },
+        }),
+        ListItem,
     ],
     content: '',
     editorProps: {
@@ -60,7 +79,6 @@ function RichTextEditor() {
     const html = editor.getHTML();
     const turndownService = new TurndownService();
     const md = turndownService.turndown(html);
-    setMarkdown(md);
     navigator.clipboard.writeText(md);
   };
 
